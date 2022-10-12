@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const contactsRouter = require('./routes/api/contacts');
 
-const { DB_HOST } = process.env;
+// const { DB_HOST } = process.env;
 
 const app = express();
 

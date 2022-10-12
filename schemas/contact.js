@@ -2,11 +2,12 @@ const joi = require('joi');
 
 const addSchema = joi.object({
   name: joi.string().min(2).required(),
-  email: joi.string().email({ minDomainSegments: 2 }).required(),
+  email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required(),
   phone: joi
     .string()
-    .pattern(/^(\([0-9]{3}\))\s?([0-9]*-[0-9]*)$/)
+    .pattern(/^(\(\d{3}\))\s?(\d{3}-\d{4})$/)
     .required(),
+  favorite: joi.bool(),
 });
 
 module.exports = { addSchema };

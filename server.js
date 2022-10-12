@@ -6,7 +6,7 @@ const { PORT = 3000, DB_HOST } = process.env;
 
 mongoose
   .connect(DB_HOST)
-  .then(console.log('Dtabase connected successfully'))
+  .then(console.log('Database connection successful'))
   .catch(({ message }) => {
     console.log(message);
     process.exit(1);

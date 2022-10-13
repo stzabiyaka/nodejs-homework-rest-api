@@ -4,7 +4,7 @@ Project provides users with API, for managing their contacts collection.
 
 ### Routes:
 
-#### GET /api/contacts:
+#### GET `/api/contacts`:
 
 Method: GET.
 
@@ -12,7 +12,7 @@ Requires: none.
 
 Response: Status - 200, Body: Array of objects with all contacts in collection.
 
-#### GET /api/contacts/:contactId:
+#### GET `/api/contacts/:contactId`:
 
 Method: GET
 
@@ -20,7 +20,7 @@ Requires: valid ID of the contact in collection.
 
 Response: Status - 200, Body: Object of contact details.
 
-#### POST /api/contacts:
+#### POST `/api/contacts`:
 
 Method: POST
 
@@ -31,7 +31,7 @@ required, should match the pattern: (111) 111-1111), favorite (Boolean) }
 
 Response: Status - 201, Body: Object of created contact details
 
-#### PUT /api/contacts/:contactId:
+#### PUT `/api/contacts/:contactId`:
 
 Method: PUT
 
@@ -43,7 +43,7 @@ required, should match the pattern: (111) 111-1111), favorite (Boolean) }
 
 Response: Status - 200, Body: Object of updated contact details
 
-#### PATCH /api/contacts/:contactId/favorite:
+#### PATCH `/api/contacts/:contactId/favorite`:
 
 Method: PATCH
 
@@ -51,7 +51,7 @@ Requires: valid ID of contact in collection, Object, with required 'favorite' fi
 
 Response: Status - 200, Body: Object of contact details with updated 'favorite' field
 
-#### DELETE /api/contacts/:contactId:
+#### DELETE `/api/contacts/:contactId`:
 
 Method: DELETE
 

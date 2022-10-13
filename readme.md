@@ -1,31 +1,67 @@
-## GoIT Node.js Course Template Homework
+## GoIT Node.js Contacts API
 
-Виконайте форк цього репозиторію для виконання домашніх завдань (2-6)
-Форк створить репозиторій на вашому http://github.com
+Project provides users with API, for managing their contacts collection.
 
-Додайте ментора до колаборації
+### Routes:
 
-Для кожної домашньої роботи створюйте свою гілку.
+#### GET `/api/contacts`:
 
-- hw02
-- hw03
-- hw04
-- hw05
-- hw06
+Method: GET.
 
-Кожна нова гілка для др повинна робитися з master
+Requires: none.
 
-Після того, як ви закінчили виконувати домашнє завдання у своїй гілці, необхідно зробити пулл-реквест (PR). Потім додати ментора для рев'ю коду. Тільки після того, як ментор заапрувить PR, ви можете виконати мердж гілки з домашнім завданням у майстер.
+Response: Status - 200, Body: Array of objects with all contacts in collection.
 
-Уважно читайте коментарі ментора. Виправте зауваження та зробіть коміт у гілці з домашнім завданням. Зміни підтягнуться у PR автоматично після того, як ви відправите коміт з виправленнями на github
-Після виправлення знову додайте ментора на рев'ю коду.
+#### GET `/api/contacts/:contactId`:
 
-- При здачі домашньої роботи є посилання на PR
-- JS-код чистий та зрозумілий, для форматування використовується Prettier
+Method: GET
 
-### Команди:
+Requires: valid ID of the contact in collection.
 
-- `npm start` &mdash; старт сервера в режимі production
-- `npm run start:dev` &mdash; старт сервера в режимі розробки (development)
-- `npm run lint` &mdash; запустити виконання перевірки коду з eslint, необхідно виконувати перед кожним PR та виправляти всі помилки лінтера
-- `npm lint:fix` &mdash; та ж перевірка лінтера, але з автоматичними виправленнями простих помилок
+Response: Status - 200, Body: Object of contact details.
+
+#### POST `/api/contacts`:
+
+Method: POST
+
+Requires: Object with following schema -
+
+{ name (String, required), email (String, required, should be a valid email address), phone (String,
+required, should match the pattern: (111) 111-1111), favorite (Boolean) }
+
+Response: Status - 201, Body: Object of created contact details
+
+#### PUT `/api/contacts/:contactId`:
+
+Method: PUT
+
+Requires: valid ID of contact in collection, Object, with at least one field of the following
+schema -
+
+{ name (String, required), email (String, required, should be a valid email address), phone (String,
+required, should match the pattern: (111) 111-1111), favorite (Boolean) }
+
+Response: Status - 200, Body: Object of updated contact details
+
+#### PATCH `/api/contacts/:contactId/favorite`:
+
+Method: PATCH
+
+Requires: valid ID of contact in collection, Object, with required 'favorite' field
+
+Response: Status - 200, Body: Object of contact details with updated 'favorite' field
+
+#### DELETE `/api/contacts/:contactId`:
+
+Method: DELETE
+
+Requires: valid ID of contact in collection
+
+Response: Status - 200, Body: message "contact deleted"
+
+### Start comands:
+
+- `npm start` &mdash; starts server in production mode
+- `npm run start:dev` &mdash; starts server in development mode
+- `npm run lint` &mdash; starts code check with eslint
+- `npm lint:fix` &mdash; starts code check with eslint and auto bugfix

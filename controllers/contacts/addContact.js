@@ -1,14 +1,7 @@
 const { Contact } = require('../../models/contact');
-// const { requestError } = require('../../helpers');
 
 const addContact = async (req, res) => {
-  const { body } = req;
-
-  const result = await Contact.create(body);
-
-  // if (!result) {
-  //   throw requestError(409, `Contact ${body.name} is already in the list.`);
-  // }
+  const result = await Contact.create(req.body);
 
   res.status(201).json(result);
 };

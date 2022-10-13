@@ -6,7 +6,7 @@ const validateFields = schema => {
 
     if (error) {
       const field = error.details[0].path[0];
-      next(requestError(400, `missing required '${field}' field`));
+      next(requestError(400, `missing required field: '${field}'`));
     }
     next();
   };

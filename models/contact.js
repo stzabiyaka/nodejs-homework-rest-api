@@ -1,11 +1,7 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, SchemaTypes } = require('mongoose');
 const joi = require('joi');
 const { handleSaveError } = require('../middlewares');
-
-const contactRegexp = {
-  phone: /^(\(\d{3}\))\s?(\d{3}-\d{4})$/,
-  email: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/,
-};
+const { regexp } = require('../helpers');
 
 const contactSchema = new Schema(
   {
@@ -16,7 +12,7 @@ const contactSchema = new Schema(
     },
     email: {
       type: String,
-      match: contactRegexp.email,
+      match: regexp.email,
     },
     phone: {
       type: String,
@@ -24,6 +20,10 @@ const contactSchema = new Schema(
     favorite: {
       type: Boolean,
       default: false,
+    },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
     },
   },
   { versionKey: false, timestamps: true }
@@ -34,7 +34,7 @@ contactSchema.post('save', handleSaveError);
 const addSchema = joi.object({
   name: joi.string().required(),
   email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required(),
-  phone: joi.string().pattern(contactRegexp.phone).required(),
+  phone: joi.string().pattern(regexp.phone).required(),
   favorite: joi.bool(),
 });
 
@@ -42,7 +42,7 @@ const updateSchema = joi
   .object({
     name: joi.string(),
     email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }),
-    phone: joi.string().pattern(contactRegexp.phone),
+    phone: joi.string().pattern(regexp.phone),
     favorite: joi.bool(),
   })
   .min(1);

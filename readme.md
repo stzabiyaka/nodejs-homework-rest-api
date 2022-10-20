@@ -11,7 +11,7 @@ Project provides users with API, for managing their contacts collection.
 Request:
 
 ```javascript
-POST /users/signup
+POST /api/users/signup
 Content-Type: application/json
 RequestBody: {
   "email": "example@example.com",
@@ -19,17 +19,130 @@ RequestBody: {
 }
 ```
 
-#### GET `/api/contacts`:
+Response:
 
-Method: GET.
+```javascript
+Status: 201 Created
+Content-Type: application/json
+ResponseBody: {
+  "user": {
+    "email": "example@example.com",
+    "subscription": "starter"
+  }
+}
+```
 
-Requires: none.
+#### POST `/api/users/login`:
 
-Response: Status - 200, Body: Array of objects with all contacts in collection.
+Request:
+
+```javascript
+POST /api/users/login
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com",
+  "password": "examplepassword"
+}
+```
+
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: {
+  "token": "exampletoken",
+  "user": {
+    "email": "example@example.com",
+    "subscription": "starter"
+  }
+}
+```
+
+#### GET `/api/users/current`:
+
+Request:
+
+```javascript
+GET / api / users / current;
+Authorization: 'Bearer {{token}}';
+```
+
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: {
+  "email": "example@example.com",
+  "subscription": "starter"
+}
+```
+
+#### GET `/api/users/logout`:
+
+Request:
+
+```javascript
+GET / api / users / logout;
+Authorization: 'Bearer {{token}}';
+```
+
+Response:
+
+```javascript
+Status: 204 No Content
+```
+
+#### PATCH `/api/users/subscription`:
+
+subscription must be one of following values: ['starter', 'pro', 'business']
+
+Request:
+
+```javascript
+POST /api/users/subscription
+Content-Type: application/json
+RequestBody: {
+  "subscription": "starter"
+}
+```
+
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: {
+  "user": {
+    "email": "example@example.com",
+    "subscription": "starter"
+  }
+}
+```
+
+### Contacts
+
+#### GET `/api/contacts?page=1&limit=3&favorite=true`:
+
+Request:
+
+```javascript
+GET / api / contacts;
+Authorization: 'Bearer {{token}}';
+```
+
+Response: Status - 200, Body: Array of objects with all contacts in collection, with optional
+pagination and filtration by "favorite" field.
 
 #### GET `/api/contacts/:contactId`:
 
-Method: GET
+Request:
+
+```javascript
+GET / api / contacts/:contactId;
+Authorization: 'Bearer {{token}}';
+```
 
 Requires: valid ID of the contact in collection.
 

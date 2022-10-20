@@ -1,8 +1,23 @@
-## GoIT Node.js Contacts API
+# GoIT Node.js Contacts API
 
 Project provides users with API, for managing their contacts collection.
 
-### Routes:
+## Routes:
+
+### Authentification:
+
+#### POST `/api/users/signup`:
+
+Request:
+
+```javascript
+POST /users/signup
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com",
+  "password": "examplepassword"
+}
+```
 
 #### GET `/api/contacts`:
 
@@ -26,8 +41,13 @@ Method: POST
 
 Requires: Object with following schema -
 
-{ name (String, required), email (String, required, should be a valid email address), phone (String,
-required, should match the pattern: (111) 111-1111), favorite (Boolean) }
+```javascript
+{
+    name (String, required),
+    email (String, required, should be a valid email address),
+    phone (String, required, should match the pattern: (111) 111-1111),
+    favorite (Boolean) }
+```
 
 Response: Status - 201, Body: Object of created contact details
 
@@ -38,8 +58,13 @@ Method: PUT
 Requires: valid ID of contact in collection, Object, with at least one field of the following
 schema -
 
-{ name (String, required), email (String, required, should be a valid email address), phone (String,
-required, should match the pattern: (111) 111-1111), favorite (Boolean) }
+```javascript
+{
+    name (String, required),
+    email (String, required, should be a valid email address),
+    phone (String, required, should match the pattern: (111) 111-1111),
+    favorite (Boolean) }
+```
 
 Response: Status - 200, Body: Object of updated contact details
 

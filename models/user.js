@@ -1,7 +1,9 @@
 const { Schema, model } = require('mongoose');
 const joi = require('joi');
-const { handleSaveError } = require('../middlewares');
+const { handleSaveError } = require('../helpers');
 const { regexp } = require('../helpers');
+
+const SUBSCRIPTION_OPTS = ['starter', 'pro', 'business'];
 
 const userSchema = new Schema(
   {
@@ -17,7 +19,7 @@ const userSchema = new Schema(
     },
     subscription: {
       type: String,
-      enum: ['starter', 'pro', 'business'],
+      enum: SUBSCRIPTION_OPTS,
       default: 'starter',
     },
     token: {
@@ -30,21 +32,32 @@ const userSchema = new Schema(
 
 userSchema.post('save', handleSaveError);
 
-const signUpSchema = joi.object({
-  email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required(),
-  password: joi.string().required(),
-  subscription: joi.string(),
-  token: joi.string(),
+const signSchema = joi.object({
+  email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required().messages({
+    'string.email': `{{#label}} must be a valid email`,
+    'any.required': `missing required field: {{#label}}`,
+  }),
+  password: joi.string().required().messages({
+    'string.empty': `{{#label}} cannot be an empty field`,
+    'any.required': `missing required field: {{#label}}`,
+  }),
 });
 
-const signInSchema = joi.object({
-  email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required(),
-  password: joi.string().required(),
+const updateSubscriptionSchema = joi.object({
+  subscription: joi
+    .string()
+    .valid(...SUBSCRIPTION_OPTS)
+    .required()
+    .messages({
+      'string.base': `{{#label}} should be a type of 'text'`,
+      'string.empty': `{{#label}} cannot be an empty field`,
+      'any.required': `missing required field: {{#label}}`,
+    }),
 });
 
 const schemas = {
-  signInSchema,
-  signUpSchema,
+  signSchema,
+  updateSubscriptionSchema,
 };
 
 const User = model('user', userSchema);

@@ -1,6 +1,5 @@
-const validateFields = require('./validateFields');
 const validateBody = require('./validateBody');
-const handleSaveError = require('./handleSaveError');
 const isValidId = require('./isValidId');
+const authentificate = require('./authentificate');
 
-module.exports = { validateFields, validateBody, handleSaveError, isValidId };
+module.exports = { validateBody, isValidId, authentificate };

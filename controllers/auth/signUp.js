@@ -1,7 +1,9 @@
 const gravatar = require('gravatar');
+const nanoid = require('nanoid');
 const { User } = require('../../models/user');
-const { requestError } = require('../../helpers');
-const { hasher } = require('../../helpers');
+const { requestError, hasher, sendEmail } = require('../../helpers');
+require('dotenv').config();
+const { BASE_URL = 'http://localhost', PORT = 3000 } = process.env;
 
 const signUp = async (req, res) => {
   const { password, email } = req.body;
@@ -10,8 +12,23 @@ const signUp = async (req, res) => {
     throw requestError(409, 'Email in use');
   }
   const hashedPassword = await hasher(password, 10);
+  const verificationToken = nanoid();
   const avatarURL = gravatar.url(email);
-  const result = await User.create({ password: hashedPassword, email, avatarURL });
+  const result = await User.create({
+    password: hashedPassword,
+    email,
+    avatarURL,
+    verificationToken,
+  });
+
+  const mail = {
+    to: email,
+    subject: 'Confirm your registration',
+    html: `<a target="_blanc" href="${BASE_URL}:${PORT}/api/users/verify/${verificationToken}">Click to verify your registration</a>`,
+  };
+
+  await sendEmail(mail);
+
   res.status(201).json({
     user: {
       email: result.email,

@@ -121,6 +121,29 @@ ResponseBody: {
 }
 ```
 
+#### PATCH `/api/users/avatars`:
+
+subscription must be one of following values: ['starter', 'pro', 'business']
+
+Request:
+
+```javascript
+POST /api/users/avatars
+Content-Type: multipart/form-data
+Authorization: "Bearer {{token}}"
+RequestBody: file to upload
+```
+
+Response:
+
+```javascript
+SStatus: 200 OK
+Content-Type: application/json
+ResponseBody: {
+  "avatarURL": "here should be link to the image"
+}
+```
+
 ### Contacts
 
 #### GET `/api/contacts?page=1&limit=3&favorite=true`:
@@ -132,74 +155,133 @@ GET / api / contacts;
 Authorization: 'Bearer {{token}}';
 ```
 
-Response: Status - 200, Body: Array of objects with all contacts in collection, with optional
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: Array of objects with all contacts in collection, with optional
 pagination and filtration by "favorite" field.
+```
 
 #### GET `/api/contacts/:contactId`:
 
 Request:
+
+Requires valid ID of the contact in collection.
 
 ```javascript
 GET / api / contacts/:contactId;
 Authorization: 'Bearer {{token}}';
 ```
 
-Requires: valid ID of the contact in collection.
+Response:
 
-Response: Status - 200, Body: Object of contact details.
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: Object of contact details.
+```
 
 #### POST `/api/contacts`:
 
-Method: POST
-
-Requires: Object with following schema -
+Request:
 
 ```javascript
-{
-    name (String, required),
-    email (String, required, should be a valid email address),
-    phone (String, required, should match the pattern: (111) 111-1111),
-    favorite (Boolean) }
+POST /api/contacts
+Content-Type: application/json
+Authorization: 'Bearer {{token}}';
+RequestBody: {
+  "name": "Contact Name",
+  "email": "sample@mail.com",
+  "phone": "(111) 111-1111",
+  "favorite": "true"
+}
 ```
 
-Response: Status - 201, Body: Object of created contact details
+Response:
+
+```javascript
+Status: 201 OK
+Content-Type: application/json
+ResponseBody: Object of created contact details.
+```
 
 #### PUT `/api/contacts/:contactId`:
 
-Method: PUT
+Request:
 
-Requires: valid ID of contact in collection, Object, with at least one field of the following
-schema -
+Requires valid ID of contact in collection
 
 ```javascript
-{
-    name (String, required),
-    email (String, required, should be a valid email address),
-    phone (String, required, should match the pattern: (111) 111-1111),
-    favorite (Boolean) }
+PUT /api/contacts/:contactId
+Content-Type: application/json
+Authorization: 'Bearer {{token}}';
+RequestBody: Object, with at least one field of the following
+schema - {
+  "name": "Contact Name",
+  "email": "sample@mail.com",
+  "phone": "(111) 111-1111",
+  "favorite": "true"
+}
 ```
 
-Response: Status - 200, Body: Object of updated contact details
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: Object of updated contact details.
+```
 
 #### PATCH `/api/contacts/:contactId/favorite`:
 
-Method: PATCH
+Request:
 
-Requires: valid ID of contact in collection, Object, with required 'favorite' field
+Requires: valid ID of contact in collection.
 
-Response: Status - 200, Body: Object of contact details with updated 'favorite' field
+```javascript
+PATCH /api/contacts/:contactId/favorite
+Content-Type: application/json
+Authorization: 'Bearer {{token}}';
+RequestBody: {
+  "favorite": "true"
+}
+```
+
+Response:
+
+```javascript
+Status: 201 OK
+Content-Type: application/json
+ResponseBody: Object of contact details with updated 'favorite' field.
+```
 
 #### DELETE `/api/contacts/:contactId`:
 
-Method: DELETE
+Request:
 
-Requires: valid ID of contact in collection
+Requires valid ID of the contact in collection.
 
-Response: Status - 200, Body: message "contact deleted"
+```javascript
+DELETE / api / contacts/:contactId;
+Authorization: 'Bearer {{token}}';
+```
+
+Response:
+
+```javascript
+Status: 200 OK
+Content-Type: application/json
+ResponseBody: {
+  "message": "contact deleted"
+}.
+```
 
 ### Start comands:
 
 - `npm start` &mdash; starts server in production mode
 - `npm run start:dev` &mdash; starts server in development mode
+- `npm run test` &mdash; starts jest testing
 - `npm run lint` &mdash; starts code check with eslint
 - `npm lint:fix` &mdash; starts code check with eslint and auto bugfix

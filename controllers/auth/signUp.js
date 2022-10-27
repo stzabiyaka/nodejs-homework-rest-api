@@ -1,9 +1,7 @@
 const gravatar = require('gravatar');
-const nanoid = require('nanoid');
+const { nanoid } = require('nanoid');
 const { User } = require('../../models/user');
-const { requestError, hasher, sendEmail } = require('../../helpers');
-require('dotenv').config();
-const { BASE_URL = 'http://localhost', PORT = 3000 } = process.env;
+const { requestError, hasher, sendEmail, createVerifyEmail } = require('../../helpers');
 
 const signUp = async (req, res) => {
   const { password, email } = req.body;
@@ -21,11 +19,7 @@ const signUp = async (req, res) => {
     verificationToken,
   });
 
-  const mail = {
-    to: email,
-    subject: 'Confirm your registration',
-    html: `<a target="_blanc" href="${BASE_URL}:${PORT}/api/users/verify/${verificationToken}">Click to verify your registration</a>`,
-  };
+  const mail = createVerifyEmail(email, verificationToken);
 
   await sendEmail(mail);
 

@@ -1,9 +1,9 @@
 const { User } = require('../../models/user');
 const { requestError } = require('../../helpers');
 
-const verifyUser = async (req, res) => {
+const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
-  const result = await User.findOne(verificationToken);
+  const result = await User.findOne({ verificationToken });
 
   if (!result) {
     throw requestError(404, 'User not found');
@@ -18,4 +18,4 @@ const verifyUser = async (req, res) => {
   res.json('Verification successful');
 };
 
-module.exports = verifyUser;
+module.exports = verifyEmail;

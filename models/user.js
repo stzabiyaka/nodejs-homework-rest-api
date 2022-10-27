@@ -64,10 +64,9 @@ const updateSubscriptionSchema = joi.object({
     }),
 });
 
-const verifyUserSchema = joi.object({
-  verificationToken: joi.string().required().messages({
-    'string.base': `{{#label}} should be a type of 'text'`,
-    'string.empty': `{{#label}} cannot be an empty field`,
+const resendVerifyEmailSchema = joi.object({
+  email: joi.string().email({ minDomainSegments: 2, maxDomainSegments: 4 }).required().messages({
+    'string.email': `{{#label}} must be a valid email`,
     'any.required': `missing required field: {{#label}}`,
   }),
 });
@@ -75,7 +74,7 @@ const verifyUserSchema = joi.object({
 const schemas = {
   signSchema,
   updateSubscriptionSchema,
-  verifyUserSchema,
+  resendVerifyEmailSchema,
 };
 
 const User = model('user', userSchema);

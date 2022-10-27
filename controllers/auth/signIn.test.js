@@ -34,7 +34,12 @@ describe('Test signIn controller', () => {
 
     const hashedPassword = await hasher(password, 10);
 
-    const user = await User.create({ ...userCredentials, password: hashedPassword });
+    const user = await User.create({
+      ...userCredentials,
+      password: hashedPassword,
+      verify: true,
+      verificationToken: 'verificationToken',
+    });
 
     const response = await request(app).post('/api/users/login').send(userCredentials);
     expect(response.statusCode).toBe(200);
@@ -51,6 +56,28 @@ describe('Test signIn controller', () => {
     );
   });
 
+  test('test user email not verified', async () => {
+    const password = '12345';
+    const userCredentials = {
+      email: 'user@mail.com',
+      password,
+    };
+
+    const hashedPassword = await hasher(password, 10);
+
+    await User.create({
+      ...userCredentials,
+      password: hashedPassword,
+      verify: false,
+      verificationToken: 'verificationToken',
+    });
+
+    const response = await request(app).post('/api/users/login').send(userCredentials);
+    expect(response.statusCode).toBe(401);
+    const { body } = response;
+    expect(body.message).toBe('Email not verified');
+  });
+
   test('test wrong user password', async () => {
     const password = '12345';
     const wrongPassword = '12346';
@@ -61,7 +88,12 @@ describe('Test signIn controller', () => {
 
     const hashedPassword = await hasher(password, 10);
 
-    await User.create({ ...userCredentials, password: hashedPassword });
+    await User.create({
+      ...userCredentials,
+      password: hashedPassword,
+      verify: true,
+      verificationToken: 'verificationToken',
+    });
 
     const response = await request(app).post('/api/users/login').send(userCredentials);
     expect(response.statusCode).toBe(401);
@@ -79,7 +111,12 @@ describe('Test signIn controller', () => {
 
     const hashedPassword = await hasher(password, 10);
 
-    await User.create({ ...userCredentials, password: hashedPassword });
+    await User.create({
+      ...userCredentials,
+      password: hashedPassword,
+      verify: true,
+      verificationToken: 'verificationToken',
+    });
 
     const response = await request(app)
       .post('/api/users/login')

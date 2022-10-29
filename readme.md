@@ -6,7 +6,7 @@ Project provides users with API, for managing their contacts collection.
 
 ### Authentification:
 
-#### POST `/api/users/signup`:
+#### User signup: POST `/api/users/signup`:
 
 Request:
 
@@ -32,7 +32,49 @@ ResponseBody: {
 }
 ```
 
-#### POST `/api/users/login`:
+#### Verify user's email: GET `/api/users/verify/:verificationToken`:
+
+Request:
+
+verificationToken is provided by link in registration email
+
+```javascript
+GET /api/users/verify/:verificationToken
+Content-Type: application/json
+```
+
+Response:
+
+```javascript
+Status: 200 OK
+ResponseBody: {
+  message: 'Verification successful',
+}
+```
+
+#### Resend registration email: POST `/api/users/verify`:
+
+Request:
+
+```javascript
+POST /api/users/verify
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com"
+}
+```
+
+Response:
+
+```javascript
+Status: 200 Ok
+Content-Type: application/json
+ResponseBody: {
+  "message": "Verification email sent"
+}
+```
+
+#### User signin: POST `/api/users/login`:
 
 Request:
 
@@ -59,7 +101,7 @@ ResponseBody: {
 }
 ```
 
-#### GET `/api/users/current`:
+#### Get current user's details: GET `/api/users/current`:
 
 Request:
 
@@ -79,7 +121,7 @@ ResponseBody: {
 }
 ```
 
-#### GET `/api/users/logout`:
+#### User signout: GET `/api/users/logout`:
 
 Request:
 
@@ -94,14 +136,15 @@ Response:
 Status: 204 No Content
 ```
 
-#### PATCH `/api/users/subscription`:
-
-subscription must be one of following values: ['starter', 'pro', 'business']
+#### Update user's subscription: PATCH `/api/users/subscription`:
 
 Request:
 
+subscription must be one of following values: ['starter', 'pro', 'business'], the default value is
+'starter'.
+
 ```javascript
-POST /api/users/subscription
+PATCH /api/users/subscription
 Content-Type: application/json
 RequestBody: {
   "subscription": "starter"
@@ -121,14 +164,12 @@ ResponseBody: {
 }
 ```
 
-#### PATCH `/api/users/avatars`:
-
-subscription must be one of following values: ['starter', 'pro', 'business']
+#### Update user's avatar: PATCH `/api/users/avatars`:
 
 Request:
 
 ```javascript
-POST /api/users/avatars
+PATCH /api/users/avatars
 Content-Type: multipart/form-data
 Authorization: "Bearer {{token}}"
 RequestBody: file to upload
@@ -146,9 +187,11 @@ ResponseBody: {
 
 ### Contacts
 
-#### GET `/api/contacts?page=1&limit=3&favorite=true`:
+#### Get user's contacts: GET `/api/contacts?page=1&limit=3&favorite=true`:
 
 Request:
+
+properties page, limit(quantity of items per page) and favorite - are optional
 
 ```javascript
 GET / api / contacts;
@@ -164,7 +207,7 @@ ResponseBody: Array of objects with all contacts in collection, with optional
 pagination and filtration by "favorite" field.
 ```
 
-#### GET `/api/contacts/:contactId`:
+#### Get user's contact by Id: GET `/api/contacts/:contactId`:
 
 Request:
 
@@ -183,7 +226,7 @@ Content-Type: application/json
 ResponseBody: Object of contact details.
 ```
 
-#### POST `/api/contacts`:
+#### Add user's contact to collection: POST `/api/contacts`:
 
 Request:
 
@@ -207,7 +250,7 @@ Content-Type: application/json
 ResponseBody: Object of created contact details.
 ```
 
-#### PUT `/api/contacts/:contactId`:
+#### Update user's contact: PUT `/api/contacts/:contactId`:
 
 Request:
 
@@ -234,7 +277,7 @@ Content-Type: application/json
 ResponseBody: Object of updated contact details.
 ```
 
-#### PATCH `/api/contacts/:contactId/favorite`:
+#### Update "favorite" field of user's contact: PATCH `/api/contacts/:contactId/favorite`:
 
 Request:
 
@@ -257,7 +300,7 @@ Content-Type: application/json
 ResponseBody: Object of contact details with updated 'favorite' field.
 ```
 
-#### DELETE `/api/contacts/:contactId`:
+#### Remove user's contact from collection: DELETE `/api/contacts/:contactId`:
 
 Request:
 
